@@ -56,10 +56,10 @@ public abstract class JSONMapper {
 					args[0] = jsonObj.optString(property, "");
 				}
 				else if (fieldType.getName().equals("int")) {
-					args[0] = Integer.valueOf(jsonObj.optInt(property, -1));
+					args[0] = jsonObj.optInt(property, -1);
 				}
 				else if (fieldType.getName().equals("boolean")) {
-					args[0] = Boolean.valueOf(jsonObj.optBoolean(property, false));
+					args[0] = jsonObj.optBoolean(property, false);
 				}
 				setterMethod.invoke(modelInstance, args);
 			}
