@@ -1,6 +1,8 @@
 package com.joocy.jsonmapper;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -13,14 +15,24 @@ public abstract class JSONMapper {
 
 	protected static Logger logger = Logger.getLogger("JSONMapper");
 
+    public static <T> T fromJSON(Class<T> modelClass, final String jsonString) {
+        try {
+            JSONObject jsonObject = (JSONObject) new JSONTokener(jsonString).nextValue();
+            return fromJSON(modelClass, jsonObject);
+        }
+        catch (JSONException je) {
+            return null;
+        }
+    }
+
 	@SuppressWarnings("unchecked")
 	public static <T> T fromJSON(Class<T> modelClass, final JSONObject jsonObj) {
         T modelInstance = null;
         try {
             modelInstance = modelClass.newInstance();
         }
-        catch (IllegalAccessException iae) {}
-        catch (InstantiationException ie) {}
+        catch (IllegalAccessException iae) {System.err.println(iae);}
+        catch (InstantiationException ie) {System.err.println(ie);}
 
 		Field[] fields = modelClass.getDeclaredFields();
         String property;
